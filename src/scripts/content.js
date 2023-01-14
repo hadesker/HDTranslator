@@ -48,7 +48,9 @@ document.onmouseup = function (event) {
         return $body.find('.dictionary-popup').remove();
     }
     let { top, left } = window.getSelection().getRangeAt(0).getBoundingClientRect();
-    chrome.runtime.sendMessage({from: "content", action: 'search', data: { x: left, y: window.scrollY + top - 45, text }}, f => f);
+    try{
+        chrome.runtime.sendMessage({from: "content", action: 'search', data: { x: left, y: window.scrollY + top - 45, text }}, f => f);
+    } catch (e) {}
 };
 if (!document.all){
     document.captureEvents(Event.MOUSEUP);

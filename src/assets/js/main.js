@@ -22,6 +22,14 @@ function checkToAddPLayButton(text, audio_mp3) {
 function getMeaning(word, meaning_index = 1) {
     return $.get(`${domain}/mean-${meaning_index}?word=${encodeURI(word)}`).then(({success, data}) => {
         let englishContent = '';
+        let illustration = data ? data.illustration : null;
+        if(!illustration && word){
+            $.get(`${domain}/illustration?word=${encodeURI(word)}`).then(({ data }) => {
+                if(data && !$('.card-body#english-content-1 .illustration').length){
+                    $('.card-body#english-content-1').prepend(`<div><img class="illustration" height="150px" width="230px" src="${domain}${data}" alt=""></div>`);
+                }
+            });
+        }
         if(data && data.english && data.english.length){
             if(meaning_index === 1){
                 audios = data.english[0].regions.map(re => re.audio_mp3);
@@ -110,7 +118,7 @@ function onTranslate(word) {
         }
         $('#translate-content').html(englishContent);
     }).catch(e => {
-       console.log('Error', e.message);
+
     }).always(e => {
         enterPress = false;
     });
