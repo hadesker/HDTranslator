@@ -34,7 +34,6 @@ const translation_services = {
                 return '';
             }).catch(e => {
                 translation_service = 'faster';
-                console.log('Error request google', e.message);
                 return '';
             });
     }
@@ -59,7 +58,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if(request && request.from === 'content' && request.action === 'search' && is_auto_selected){
         let { text } = request.data;
         translation_services[translation_service](text).then((result) => {
-            console.log('Call translation: ', translation_service, text, result);
             result && sendMessage({ action: 'search-result', data: { ...request.data, result } });
         });
     }

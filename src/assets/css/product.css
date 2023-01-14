@@ -187,3 +187,13 @@ img.illustration{
     height: 100%;
     width: 100%;
 }
+.card-header{
+    padding: 5px 10px;
+}
+.view-more{
+    float: right;
+    color: #fcfdff;
+    background: #001980;
+    padding: 0px 9px;
+    border-radius: 26px;
+}

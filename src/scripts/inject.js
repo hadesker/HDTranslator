@@ -10,3 +10,9 @@ window.playGoogleVoice = function (text) {
     utterThis.text = text;
     synth.speak(utterThis);
 }
+window.hi_tech = {
+    ...window.hi_tech,
+    dictionary: {
+        version: 2
+    }
+};

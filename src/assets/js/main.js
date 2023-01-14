@@ -78,6 +78,7 @@ function getSynonym(word) {
 }
 
 function onTranslate(word) {
+    $('a.view-more').attr('href', `https://dictionary.faster.asia/?word=${word}`);
     audios = [];
     $('#english-content-1').html('<div class="loadersmall"></div>');
     $('#translate-content').html('<div class="loadersmall"></div>');
