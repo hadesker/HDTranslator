@@ -16,6 +16,7 @@
     --success: #34d399;
     --purple: #c084fc;
     --danger: #f87171;
+    --footer-height: 34px;
 }
 
 * {
@@ -57,6 +58,7 @@ html.sidebar-mode body {
     width: 100%;
     min-width: 0;
     min-height: 100vh;
+    --footer-height: 30px;
 }
 
 html.sidebar-frame-page,
@@ -142,18 +144,23 @@ a:focus {
 
 .brand-mark {
     display: inline-flex;
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     flex: 0 0 auto;
     align-items: center;
     justify-content: center;
-    border: 1px solid var(--border-strong);
-    border-radius: 12px;
-    background: var(--active);
-    color: var(--text);
-    font-size: 12px;
-    font-weight: 700;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    overflow: hidden;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    box-shadow: 0 8px 18px rgba(0,96,255,0.2);
+}
+
+.brand-mark img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .brand-block h1 {
@@ -513,11 +520,11 @@ a:focus {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 14px 16px 18px;
+    padding: 14px 16px calc(18px + var(--footer-height));
 }
 
 .sidebar-mode .results-stack {
-    padding-bottom: 28px;
+    padding-bottom: calc(18px + var(--footer-height));
 }
 
 .dashboard-card,
@@ -831,7 +838,7 @@ img.illustration {
     display: none;
     position: fixed;
     right: 14px;
-    bottom: 14px;
+    bottom: calc(var(--footer-height) + 12px);
     z-index: 999;
     width: 34px;
     height: 34px;
@@ -862,6 +869,49 @@ img.illustration {
 
 #toTopHover {
     display: none;
+}
+
+.site-footer {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 30;
+    display: flex;
+    min-height: var(--footer-height);
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid var(--border);
+    background: rgba(10,10,13,0.9);
+    padding: 6px 14px;
+    color: var(--text-subtle);
+    font-size: 10px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+}
+
+.site-footer a {
+    display: inline-flex;
+    max-width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    overflow: hidden;
+    border-radius: 999px;
+    color: var(--text-subtle);
+    line-height: 1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.site-footer a:hover {
+    color: var(--text-muted);
+}
+
+.site-footer i {
+    color: var(--text-muted);
+    font-size: 9px;
+    line-height: 1;
 }
 
 .ui-autocomplete {
@@ -925,4 +975,289 @@ img.illustration {
         justify-content: space-between;
     }
 
+}
+
+.sidebar-mode .app-header {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+    min-height: auto;
+    padding: 10px 12px;
+}
+
+.sidebar-mode .brand-block {
+    gap: 8px;
+}
+
+.sidebar-mode .brand-mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+}
+
+.sidebar-mode .brand-block h1 {
+    font-size: 17px;
+    line-height: 1.15;
+}
+
+.sidebar-mode .brand-block p {
+    margin-top: 1px;
+    font-size: 10.5px;
+    line-height: 1.2;
+}
+
+.sidebar-mode .header-actions {
+    width: 100%;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.sidebar-mode .language-switch {
+    height: 28px;
+    padding: 3px;
+    border-radius: 9px;
+}
+
+.sidebar-mode .language-option {
+    height: 20px;
+    min-width: 28px;
+    border-radius: 6px;
+    padding: 0 6px;
+    font-size: 9.5px;
+}
+
+.sidebar-mode .auto-control {
+    height: 28px;
+    max-width: 168px;
+    min-width: 0;
+    gap: 6px;
+    padding: 0 8px;
+    border-radius: 9px;
+}
+
+.sidebar-mode .toggle-track {
+    width: 26px;
+    height: 15px;
+}
+
+.sidebar-mode .toggle-track::after {
+    width: 9px;
+    height: 9px;
+}
+
+.sidebar-mode .auto-control input:checked + .toggle-track::after {
+    transform: translateX(11px);
+}
+
+.sidebar-mode .action-label {
+    min-width: 0;
+    overflow: hidden;
+    font-size: 10.5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.sidebar-mode .lookup-panel {
+    padding: 10px 12px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+}
+
+.sidebar-mode .lookup-control {
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 6px;
+    min-height: 40px;
+    padding: 4px;
+    border-radius: 10px;
+}
+
+.sidebar-mode .lookup-icon {
+    width: 24px;
+    height: 30px;
+    font-size: 11px;
+}
+
+.sidebar-mode .lookup-input {
+    flex: 1 1 auto;
+    flex-basis: auto;
+    height: 30px;
+    font-size: 12px;
+}
+
+.sidebar-mode .action-group {
+    width: auto;
+    gap: 4px;
+}
+
+.sidebar-mode .action-btn {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    padding: 0;
+    border-radius: 8px;
+}
+
+.sidebar-mode .action-btn i {
+    font-size: 11px;
+}
+
+.sidebar-mode .results-stack {
+    gap: 10px;
+    padding: 10px 12px calc(18px + var(--footer-height));
+}
+
+.sidebar-mode .dashboard-card,
+.sidebar-mode .card {
+    border-radius: 14px !important;
+}
+
+.sidebar-mode .card-header {
+    gap: 8px;
+    min-height: 48px;
+    padding: 9px 11px !important;
+}
+
+.sidebar-mode .card-header h2 {
+    font-size: 14px;
+    line-height: 1.22;
+}
+
+.sidebar-mode .eyebrow {
+    font-size: 8.5px;
+    letter-spacing: 0.07em;
+}
+
+.sidebar-mode .view-more {
+    height: 26px;
+    padding: 0 8px;
+    font-size: 10px;
+}
+
+.sidebar-mode .card-body {
+    min-height: 76px;
+}
+
+.sidebar-mode .empty-state,
+.sidebar-mode .p-3 {
+    padding: 12px !important;
+    font-size: 12px;
+}
+
+.sidebar-mode .group {
+    padding: 12px;
+}
+
+.sidebar-mode .type {
+    min-height: 21px;
+    margin-bottom: 8px;
+    padding: 0 8px;
+    font-size: 9px;
+}
+
+.sidebar-mode .font-weight-bold,
+.sidebar-mode .mean .title {
+    font-size: 12px;
+}
+
+.sidebar-mode .region {
+    min-height: 30px;
+    gap: 5px;
+    padding: 3px 6px;
+    border-radius: 8px;
+}
+
+.sidebar-mode .reg-volume,
+.sidebar-mode .btn-pronounce,
+.sidebar-mode .btn-copy {
+    width: 22px;
+    height: 22px;
+    border-radius: 7px;
+    font-size: 11px;
+}
+
+.sidebar-mode .ipa,
+.sidebar-mode .mean .examples .example {
+    font-size: 11px;
+}
+
+.sidebar-mode .mean .translated {
+    font-size: 12.5px;
+}
+
+.sidebar-mode .ui-autocomplete {
+    max-width: calc(100vw - 24px);
+    max-height: 220px;
+    padding: 5px;
+    border-radius: 10px;
+    font-size: 11px;
+}
+
+@media (max-width: 360px) {
+    html.sidebar-mode,
+    html.sidebar-mode body {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .sidebar-mode .app-header {
+        gap: 8px;
+        padding: 8px 10px;
+    }
+
+    .sidebar-mode .brand-mark {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+    }
+
+    .sidebar-mode .brand-block h1 {
+        font-size: 15px;
+    }
+
+    .sidebar-mode .brand-block p,
+    .sidebar-mode .action-label {
+        font-size: 10px;
+    }
+
+    .sidebar-mode .auto-control {
+        max-width: 150px;
+        padding: 0 7px;
+    }
+
+    .sidebar-mode .lookup-panel {
+        padding: 8px 10px;
+    }
+
+    .sidebar-mode .lookup-control {
+        gap: 4px;
+    }
+
+    .sidebar-mode .lookup-icon {
+        display: none;
+    }
+
+    .sidebar-mode .lookup-input {
+        height: 28px;
+        font-size: 11.5px;
+    }
+
+    .sidebar-mode .action-btn {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+    }
+
+    .sidebar-mode .results-stack {
+        gap: 9px;
+        padding: 9px 10px calc(16px + var(--footer-height));
+    }
+
+    .sidebar-mode .card-header {
+        min-height: 46px;
+        padding: 8px 10px !important;
+    }
+
+    .sidebar-mode .card-header h2 {
+        font-size: 13.5px;
+    }
 }

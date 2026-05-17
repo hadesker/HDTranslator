@@ -9,13 +9,15 @@
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
     <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css?v=1">
-    <link href="../assets/css/product.css?v=23" rel="stylesheet">
+    <link href="../assets/css/product.css?v=26" rel="stylesheet">
 </head>
 <body>
 <div class="popup-shell">
     <header class="app-header">
         <div class="brand-block">
-            <div class="brand-mark">HD</div>
+            <div class="brand-mark">
+                <img src="../assets/icons/48.png" srcset="../assets/icons/48.png 1x, ../assets/icons/128.png 2x" alt="" aria-hidden="true">
+            </div>
             <div>
                 <h1 data-i18n="appTitle">Translator</h1>
                 <p data-i18n="appSubtitle">English - Vietnamese dictionary</p>
@@ -26,10 +28,10 @@
                 <button class="language-option" type="button" data-language="en" title="English" data-i18n-title="englishLanguage">EN</button>
                 <button class="language-option" type="button" data-language="vi" title="Vietnamese" data-i18n-title="vietnameseLanguage">VI</button>
             </div>
-            <label class="auto-control btn-auto-translation" data-tooltip="Auto selection: automatically translates the text you highlight on the current page and shows a small translation popup beside the selection." data-i18n-tooltip="autoTooltip">
+            <label class="auto-control btn-auto-translation" data-tooltip="Auto translate: automatically translates the text you highlight on the current page and shows a small translation popup beside the selection." data-i18n-tooltip="autoTooltip">
                 <input type="checkbox" aria-label="Automatically translate selected text on the current page" data-i18n-aria="autoTitle">
                 <span class="toggle-track"></span>
-                <span class="action-label" data-i18n="autoSelection">Auto selection</span>
+                <span class="action-label" data-i18n="autoSelection">Auto translate</span>
             </label>
         </div>
     </header>
@@ -90,6 +92,15 @@
             </div>
         </section>
     </main>
+    <footer class="site-footer">
+        <a href="https://hadesker.net" target="_blank" rel="noopener noreferrer">
+            <span data-i18n="footerMadeWith">Made with</span>
+            <i class="fa fa-heart" aria-hidden="true"></i>
+            <span>&amp;</span>
+            <i class="fa fa-coffee" aria-hidden="true"></i>
+            <span data-i18n="footerBy">by Hadesker</span>
+        </a>
+    </footer>
 </div>
 <div class="arr-w3ls">
     <a href="#" id="toTop"><span id="toTopHover"></span></a>
@@ -100,5 +111,5 @@
 </audio>
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/jquery-ui.min.js"></script>
-<script src="../assets/js/main.js?v=23"></script>
+<script src="../assets/js/main.js?v=25"></script>
 </body></html>

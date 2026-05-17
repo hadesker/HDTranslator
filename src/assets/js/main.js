@@ -15,9 +15,9 @@ const i18n = {
         languageLabel: 'Interface language',
         englishLanguage: 'English',
         vietnameseLanguage: 'Vietnamese',
-        autoSelection: 'Auto selection',
+        autoSelection: 'Auto translate',
         autoTitle: 'Automatically translate selected text on the current page',
-        autoTooltip: 'Auto selection: automatically translates the text you highlight on the current page and shows a small translation popup beside the selection.',
+        autoTooltip: 'Auto translate: automatically translates the text you highlight on the current page and shows a small translation popup beside the selection.',
         searchPlaceholder: '.ve. / .ev. for sentence translation',
         search: 'Search',
         pasteSelected: 'Paste selected text',
@@ -30,6 +30,8 @@ const i18n = {
         synonymTitle: 'Synonyms in English',
         viewMore: 'View more',
         emptyState: 'The result will be displayed in here...',
+        footerMadeWith: 'Made with',
+        footerBy: 'by Hadesker',
         audioUnsupported: 'Your browser does not support the audio format.'
     },
     vi: {
@@ -38,9 +40,9 @@ const i18n = {
         languageLabel: 'Ngôn ngữ giao diện',
         englishLanguage: 'Tiếng Anh',
         vietnameseLanguage: 'Tiếng Việt',
-        autoSelection: 'Tự động chọn',
+        autoSelection: 'Tự động dịch',
         autoTitle: 'Tự động dịch văn bản được bôi chọn trên trang hiện tại',
-        autoTooltip: 'Tự động chọn: tự động dịch đoạn văn bản bạn bôi chọn trên trang hiện tại và hiển thị popup dịch nhỏ cạnh vùng chọn.',
+        autoTooltip: 'Tự động dịch: tự động dịch đoạn văn bản bạn bôi chọn trên trang hiện tại và hiển thị popup dịch nhỏ cạnh vùng chọn.',
         searchPlaceholder: 'Nhập từ hoặc dùng .ve. / .ev. để dịch câu',
         search: 'Tìm kiếm',
         pasteSelected: 'Dán văn bản đã chọn',
@@ -53,6 +55,8 @@ const i18n = {
         synonymTitle: 'Từ đồng nghĩa tiếng Anh',
         viewMore: 'Xem thêm',
         emptyState: 'Kết quả sẽ hiển thị tại đây...',
+        footerMadeWith: 'Làm với',
+        footerBy: 'bởi Hadesker',
         audioUnsupported: 'Trình duyệt của bạn không hỗ trợ định dạng âm thanh.'
     }
 };

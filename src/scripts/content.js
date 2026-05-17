@@ -207,6 +207,10 @@ const copyIcon = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" 
 const externalLinkIcon = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path></svg>`;
 const closeIcon = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>`;
 const selectionUtterance = new SpeechSynthesisUtterance(' ');
+const selectionLookupDelay = 180;
+const multiClickSelectionLookupDelay = 650;
+let selectionLookupTimer = null;
+let selectionLookupId = 0;
 
 function clamp(value, min, max) {
     if(max < min){
@@ -316,6 +320,14 @@ function removeDictionaryPopup() {
     }
 }
 
+function cancelPendingSelectionLookup() {
+    selectionLookupId += 1;
+    if(selectionLookupTimer){
+        clearTimeout(selectionLookupTimer);
+        selectionLookupTimer = null;
+    }
+}
+
 function playSelectionVoice(text) {
     text = (text || '').trim();
     if(!text){
@@ -333,7 +345,10 @@ extensionApi.runtime.onMessage.addListener(function(request, sender, sendRespons
         switch (request.action){
             case 'get-text': return sendResponse({ from: 'content', text: getSelectionText() });
             case 'search-result': {
-                let { x, y, text, result, selectionRect } = request.data;
+                let { x, y, text, result, selectionRect, lookupId } = request.data;
+                if(lookupId && lookupId !== selectionLookupId){
+                    break;
+                }
                 const $body = $('body');
                 const pronounceText = isVietnamese(text) ? result : text;
                 const popup = `<div class="dictionary-popup" style="top: 0 !important; left: 0 !important; visibility: hidden !important;">
@@ -367,19 +382,25 @@ $(document).on('click', '.dictionary-popup__speak', function () {
 }).on('click', '.dictionary-popup__copy', function () {
     copyText($(this).attr('data-copy'));
 }).on('click', '.dictionary-popup__close', function () {
+    cancelPendingSelectionLookup();
     removeDictionaryPopup();
 });
 
-document.onmouseup = function (event) {
+function requestSelectionLookup(event, lookupId) {
     let text = (getSelectionText() || '').trim();
-    const $body = $('body');
-    if($(event.target).closest('.dictionary-popup').length){
+    if(lookupId !== selectionLookupId){
         return;
     }
     if(!text || text.length < 3){
         return removeDictionaryPopup();
     }
-    const rect = window.getSelection().getRangeAt(0).getBoundingClientRect();
+
+    const selection = window.getSelection();
+    if(!selection || !selection.rangeCount){
+        return removeDictionaryPopup();
+    }
+
+    const rect = selection.getRangeAt(0).getBoundingClientRect();
     const selectionRect = {
         left: window.scrollX + rect.left,
         top: window.scrollY + rect.top,
@@ -396,10 +417,25 @@ document.onmouseup = function (event) {
                 x: selectionRect.left,
                 y: selectionRect.top,
                 selectionRect,
-                text
+                text,
+                lookupId
             }
         }, f => f);
     } catch (e) {}
+}
+
+document.onmouseup = function (event) {
+    if($(event.target).closest('.dictionary-popup').length){
+        return;
+    }
+
+    cancelPendingSelectionLookup();
+    const lookupId = selectionLookupId;
+    const delay = event.detail === 2 ? multiClickSelectionLookupDelay : selectionLookupDelay;
+    selectionLookupTimer = setTimeout(function () {
+        selectionLookupTimer = null;
+        requestSelectionLookup(event, lookupId);
+    }, delay);
 };
 if (!document.all){
     document.captureEvents(Event.MOUSEUP);

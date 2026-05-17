@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "HD Translator",
-    "description": "Translation English - Vietnamese dictionary. Instant translation, online lookup and word translation when you overlay blocks of text",
+    "description": "Từ điển Anh-Việt / EN-VI translator: select text to translate instantly, listen, copy, and look up details.",
     "version": "1.3",
     "minimum_chrome_version": "114",
     "background": {
@@ -11,6 +11,9 @@
         "<all_urls>"
     ],
     "icons": {
+        "16": "src/assets/icons/16.png",
+        "32": "src/assets/icons/32.png",
+        "48": "src/assets/icons/48.png",
         "128": "src/assets/icons/128.png"
     },
     "permissions": [
@@ -20,6 +23,9 @@
     ],
     "action": {
         "default_icon": {
+            "16": "src/assets/icons/16.png",
+            "32": "src/assets/icons/32.png",
+            "48": "src/assets/icons/48.png",
             "128": "src/assets/icons/128.png"
         },
         "default_title": "Open HD Translator"
@@ -29,14 +35,23 @@
     },
     "content_scripts": [
         {
-            "matches": ["<all_urls>"],
-            "js": ["src/assets/js/jquery-3.6.0.min.js", "src/scripts/content.js"]
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "src/assets/js/jquery-3.6.0.min.js",
+                "src/scripts/content.js"
+            ]
         }
     ],
     "web_accessible_resources": [
         {
-            "resources": ["src/scripts/inject.js"],
-            "matches": ["<all_urls>"]
+            "resources": [
+                "src/scripts/inject.js"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
         }
     ]
 }
