@@ -2,8 +2,146 @@ const $word = $('#word');
 let audios = [];
 let enterPress = false;
 let is_auto_selected = false;
+const chromeApi = typeof chrome !== 'undefined' ? chrome : null;
+const browserApi = typeof browser !== 'undefined' ? browser : null;
+let appLanguage = getDefaultLanguage();
 
 const domain = 'https://dictionary.faster.asia';
+
+const i18n = {
+    en: {
+        appTitle: 'Translator',
+        appSubtitle: 'English - Vietnamese dictionary',
+        languageLabel: 'Interface language',
+        englishLanguage: 'English',
+        vietnameseLanguage: 'Vietnamese',
+        autoSelection: 'Auto selection',
+        autoTitle: 'Automatically translate selected text on the current page',
+        autoTooltip: 'Auto selection: automatically translates the text you highlight on the current page and shows a small translation popup beside the selection.',
+        searchPlaceholder: '.ve. / .ev. for sentence translation',
+        search: 'Search',
+        pasteSelected: 'Paste selected text',
+        clear: 'Clear',
+        translationEyebrow: 'Translation',
+        translationTitle: 'Meaning in English-Vietnamese',
+        dictionaryEyebrow: 'Dictionary',
+        dictionaryTitle: 'English definitions',
+        lexiconEyebrow: 'Lexicon',
+        synonymTitle: 'Synonyms in English',
+        viewMore: 'View more',
+        emptyState: 'The result will be displayed in here...',
+        audioUnsupported: 'Your browser does not support the audio format.'
+    },
+    vi: {
+        appTitle: 'Từ điển',
+        appSubtitle: 'Từ điển Anh - Việt',
+        languageLabel: 'Ngôn ngữ giao diện',
+        englishLanguage: 'Tiếng Anh',
+        vietnameseLanguage: 'Tiếng Việt',
+        autoSelection: 'Tự động chọn',
+        autoTitle: 'Tự động dịch văn bản được bôi chọn trên trang hiện tại',
+        autoTooltip: 'Tự động chọn: tự động dịch đoạn văn bản bạn bôi chọn trên trang hiện tại và hiển thị popup dịch nhỏ cạnh vùng chọn.',
+        searchPlaceholder: 'Nhập từ hoặc dùng .ve. / .ev. để dịch câu',
+        search: 'Tìm kiếm',
+        pasteSelected: 'Dán văn bản đã chọn',
+        clear: 'Xóa',
+        translationEyebrow: 'Dịch',
+        translationTitle: 'Nghĩa Anh - Việt',
+        dictionaryEyebrow: 'Từ điển',
+        dictionaryTitle: 'Định nghĩa tiếng Anh',
+        lexiconEyebrow: 'Từ đồng nghĩa',
+        synonymTitle: 'Từ đồng nghĩa tiếng Anh',
+        viewMore: 'Xem thêm',
+        emptyState: 'Kết quả sẽ hiển thị tại đây...',
+        audioUnsupported: 'Trình duyệt của bạn không hỗ trợ định dạng âm thanh.'
+    }
+};
+
+function normalizeLanguage(language) {
+    return language === 'vi' ? 'vi' : 'en';
+}
+
+function getDefaultLanguage() {
+    return normalizeLanguage((navigator.language || '').toLowerCase().startsWith('vi') ? 'vi' : 'en');
+}
+
+function t(key) {
+    return (i18n[appLanguage] && i18n[appLanguage][key]) || i18n.en[key] || key;
+}
+
+function applyLanguage(language) {
+    appLanguage = normalizeLanguage(language);
+    document.documentElement.lang = appLanguage;
+    $('[data-i18n]').each(function () {
+        $(this).text(t($(this).attr('data-i18n')));
+    });
+    $('[data-i18n-placeholder]').each(function () {
+        $(this).attr('placeholder', t($(this).attr('data-i18n-placeholder')));
+    });
+    $('[data-i18n-title]').each(function () {
+        $(this).attr('title', t($(this).attr('data-i18n-title')));
+    });
+    $('[data-i18n-aria]').each(function () {
+        $(this).attr('aria-label', t($(this).attr('data-i18n-aria')));
+    });
+    $('[data-i18n-tooltip]').each(function () {
+        $(this).attr('data-tooltip', t($(this).attr('data-i18n-tooltip')));
+    });
+    $('.language-option').toggleClass('is-active', false).attr('aria-pressed', 'false');
+    $(`.language-option[data-language="${appLanguage}"]`).toggleClass('is-active', true).attr('aria-pressed', 'true');
+}
+
+applyLanguage(appLanguage);
+
+function storageGet(keys, callback) {
+    if(!chromeApi && !browserApi){
+        return callback({});
+    }
+    if(chromeApi && chromeApi.storage && chromeApi.storage.local){
+        return chromeApi.storage.local.get(keys, callback);
+    }
+    return browserApi.storage.local.get(keys).then(callback).catch(() => callback({}));
+}
+
+function storageSet(data, callback) {
+    if(!chromeApi && !browserApi){
+        return callback && callback();
+    }
+    if(chromeApi && chromeApi.storage && chromeApi.storage.local){
+        return chromeApi.storage.local.set(data, callback);
+    }
+    return browserApi.storage.local.set(data).then(callback).catch(() => callback && callback());
+}
+
+function runtimeSendMessage(message, callback) {
+    if(!chromeApi && !browserApi){
+        return callback && callback();
+    }
+    if(chromeApi && chromeApi.runtime){
+        return chromeApi.runtime.sendMessage(message, callback);
+    }
+    return browserApi.runtime.sendMessage(message).then(callback).catch(() => callback && callback());
+}
+
+function tabsQuery(query, callback) {
+    if(!chromeApi && !browserApi){
+        return callback([]);
+    }
+    if(chromeApi && chromeApi.tabs){
+        return chromeApi.tabs.query(query, callback);
+    }
+    return browserApi.tabs.query(query).then(callback).catch(() => callback([]));
+}
+
+function tabsSendMessage(tabId, message, callback) {
+    if(!tabId){
+        return callback && callback();
+    }
+    if(chromeApi && chromeApi.tabs){
+        return chromeApi.tabs.sendMessage(tabId, message, callback);
+    }
+    return browserApi.tabs.sendMessage(tabId, message).then(callback).catch(() => callback && callback());
+}
 
 function isVietnamese(text){
     return /[ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễếệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]/g.test(text);
@@ -124,6 +262,34 @@ function onTranslate(word) {
     });
 }
 
+function resetResults() {
+    audios = [];
+    $('a.view-more').attr('href', 'https://dictionary.faster.asia/');
+    $('#translate-content').html(`<div class="empty-state" data-i18n="emptyState">${t('emptyState')}</div>`);
+    $('#english-content-1').html(`<div class="empty-state" data-i18n="emptyState">${t('emptyState')}</div>`);
+    $('#synonym').html(`<div class="empty-state" data-i18n="emptyState">${t('emptyState')}</div>`);
+    $('i.playing').removeClass('playing');
+    $('.copying').removeClass('copying');
+}
+
+function getSearchTerm() {
+    return ($word.val() || '').trim();
+}
+
+function updateSearchState() {
+    $('.btn-search').prop('disabled', !getSearchTerm());
+}
+
+function submitSearch() {
+    const word = getSearchTerm();
+    if(!word){
+        updateSearchState();
+        return false;
+    }
+    onTranslate(word);
+    return true;
+}
+
 $word.autocomplete && $word.autocomplete({
     source: function( request, response ) {
         if(enterPress){
@@ -147,6 +313,23 @@ $word.autocomplete && $word.autocomplete({
     autoFocus: true
 });
 
+const wordInputElement = document.getElementById('word');
+if(wordInputElement){
+    wordInputElement.addEventListener('keydown', function (event) {
+        if((event.key !== 'Enter' && event.which !== 13) || event.isComposing){
+            return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        enterPress = true;
+        try {
+            $word.autocomplete && $word.autocomplete('close');
+        } catch (e) {}
+        submitSearch();
+    }, true);
+}
+
 var timeoutCopying= null;
 var timeoutPlaying= null;
 $(function () {
@@ -169,6 +352,7 @@ $(function () {
 
     var audio = document.getElementById('audio');
     var source = document.getElementById('audioSource');
+    var audioPlayRequest = 0;
     function playAudio(url) {
         if(!url){
             return;
@@ -176,16 +360,27 @@ $(function () {
         if(!url.startsWith('http')){
             url = `${domain}${url}`;
         }
+        const requestId = ++audioPlayRequest;
         clearTimeout(timeoutPlaying);
         $('.card-body').find(`[data-audio="${url}"]>i`).addClass('playing');
         timeoutPlaying = setTimeout(() => {
             $('i.playing').removeClass('playing');
         }, 2000);
         if(!(source.src || '').includes(url)){
+            audio.pause();
             source.src = url;
             audio.load();
         }
-        audio.play();
+        const playPromise = audio.play();
+        if(playPromise && typeof playPromise.catch === 'function'){
+            playPromise.catch((error) => {
+                if(requestId !== audioPlayRequest || error.name === 'AbortError'){
+                    return;
+                }
+                $('i.playing').removeClass('playing');
+                console.warn('Unable to play pronunciation audio', error);
+            });
+        }
     }
 
     $('.card-body').on('click', '.reg-volume', function () {
@@ -230,20 +425,25 @@ $(function () {
             } break;
         }
     });
+    $word.on('input', updateSearchState);
+    updateSearchState();
     $('.btn-clear').click(function () {
         $word.val('');
+        resetResults();
+        updateSearchState();
         $word.focus();
     });
     $('.btn-search').click(function () {
-        onTranslate($word.val());
+        submitSearch();
     });
     $('.btn-paste').click(function () {
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, {from: "popup", action: 'get-text'}, function(response) {
+        tabsQuery({active: true, currentWindow: true}, function(tabs) {
+            tabsSendMessage(tabs[0] && tabs[0].id, {from: "popup", action: 'get-text'}, function(response) {
                 let { text } = response || {};
                 if(text){
                     $word.val(text);
-                    $('.btn-search').click();
+                    updateSearchState();
+                    submitSearch();
                 }
             });
         });
@@ -254,13 +454,19 @@ $(function () {
         }, 700);
     });
 
-    chrome.storage.local.get(['is_auto_selected'], function (data) {
+    storageGet(['is_auto_selected', 'app_language'], function (data) {
+        applyLanguage(data.app_language || appLanguage);
         is_auto_selected = !!data.is_auto_selected;
         $('.btn-auto-translation>input').prop('checked', is_auto_selected);
     });
+    $('.language-option').on('click', function () {
+        const language = normalizeLanguage($(this).attr('data-language'));
+        applyLanguage(language);
+        storageSet({ app_language: language });
+    });
     $('.btn-auto-translation>input').on('change', function () {
         is_auto_selected = $(this).is(':checked');
-        chrome.runtime.sendMessage({from: "popup", action: 'update', data: { is_auto_selected }}, f => f);
-        return chrome.storage.local.set({ is_auto_selected: is_auto_selected });
+        runtimeSendMessage({from: "popup", action: 'update', data: { is_auto_selected }}, f => f);
+        return storageSet({ is_auto_selected: is_auto_selected });
     });
 });

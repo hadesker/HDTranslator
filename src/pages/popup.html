@@ -5,78 +5,100 @@
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../assets/js/surface.js?v=1"></script>
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/jquery-ui.min.css">
     <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css?v=1">
-    <link href="../assets/css/product.css?v=22" rel="stylesheet">
+    <link href="../assets/css/product.css?v=23" rel="stylesheet">
 </head>
-<body style="width: 500px">
-<div class="container-fluid my-3">
-    <div class="row">
-        <div class="col-12">
-            <div id="parent" class="form-group">
-                <div class="input-group">
-                    <input type="text" autocapitalize="none" value="" autofocus="" class="form-control ui-autocomplete-input" placeholder="Start with '.ve.' or '.ev.' to translate a sentence" id="word" autocomplete="off">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-success btn-search" type="button"><i class="fa fa-search"></i></button>
-                        <button class="btn btn-outline-info btn-paste" type="button"><i class="fa fa-paste"></i></button>
-                        <button class="btn btn-outline-warning btn-clear" type="button"><i class="fa fa-remove"></i></button>
-                        <button class="btn btn-outline-dark btn-auto-translation" type="button">
-                            <input type="checkbox"  title="Auto translation when text is selected" class="form-control">
-                        </button>
-                    </div>
-                </div>
+<body>
+<div class="popup-shell">
+    <header class="app-header">
+        <div class="brand-block">
+            <div class="brand-mark">HD</div>
+            <div>
+                <h1 data-i18n="appTitle">Translator</h1>
+                <p data-i18n="appSubtitle">English - Vietnamese dictionary</p>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12 col-md-6 mb-3">
-            <div class="row" style="margin-top: 60px">
-                <div class="col-12 mb-3">
-                    <div class="card ">
-                        <div class="card-header text-white bg-info">
-                            Meaning in English-Vietnamese
-                            <a href="https://dictionary.faster.asia/" class="view-more" target="_blank">View more >></a>
-                        </div>
-                        <div class="card-body" id="translate-content">
-                            <div class="p-3">The result will be displayed in here...</div>
-                        </div>
-                    </div>
-                </div>
+        <div class="header-actions">
+            <div class="language-switch" role="group" aria-label="Interface language" data-i18n-aria="languageLabel">
+                <button class="language-option" type="button" data-language="en" title="English" data-i18n-title="englishLanguage">EN</button>
+                <button class="language-option" type="button" data-language="vi" title="Vietnamese" data-i18n-title="vietnameseLanguage">VI</button>
             </div>
-            <div class="row">
-                <div class="col-12 mb-3">
-                    <div class="card ">
-                        <div class="card-header text-white bg-success">
-                            Meaning in English
-                        </div>
-                        <div class="card-body" id="english-content-1">
-                            <div class="p-3">The result will be displayed in here...</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 mb-3">
-                    <div class="card ">
-                        <div class="card-header text-white bg-dark">
-                            Synonyms in English
-                        </div>
-                        <div class="card-body" id="synonym">
-                            <div class="p-3">The result will be displayed in here...</div>
-                        </div>
-                    </div>
-                </div>
+            <label class="auto-control btn-auto-translation" data-tooltip="Auto selection: automatically translates the text you highlight on the current page and shows a small translation popup beside the selection." data-i18n-tooltip="autoTooltip">
+                <input type="checkbox" aria-label="Automatically translate selected text on the current page" data-i18n-aria="autoTitle">
+                <span class="toggle-track"></span>
+                <span class="action-label" data-i18n="autoSelection">Auto selection</span>
+            </label>
+        </div>
+    </header>
+
+    <section class="lookup-panel">
+        <div id="parent" class="lookup-control">
+            <div class="lookup-icon"><i class="fa fa-search"></i></div>
+            <input type="text" autocapitalize="none" value="" autofocus="" class="lookup-input ui-autocomplete-input" placeholder=".ve. / .ev. for sentence translation" data-i18n-placeholder="searchPlaceholder" id="word" autocomplete="off">
+            <div class="action-group">
+                <button class="action-btn primary-action btn-search" type="button" title="Search" aria-label="Search" data-i18n-title="search" data-i18n-aria="search">
+                    <i class="fa fa-search"></i>
+                </button>
+                <button class="action-btn btn-paste" type="button" title="Paste selected text" aria-label="Paste selected text" data-i18n-title="pasteSelected" data-i18n-aria="pasteSelected">
+                    <i class="fa fa-paste"></i>
+                </button>
+                <button class="action-btn btn-clear" type="button" title="Clear" aria-label="Clear" data-i18n-title="clear" data-i18n-aria="clear">
+                    <i class="fa fa-remove"></i>
+                </button>
             </div>
         </div>
-    </div>
+    </section>
+
+    <main class="results-stack">
+        <section class="dashboard-card card">
+            <div class="card-header">
+                <div>
+                    <span class="eyebrow" data-i18n="translationEyebrow">Translation</span>
+                    <h2 data-i18n="translationTitle">Meaning in English-Vietnamese</h2>
+                </div>
+                <a href="https://dictionary.faster.asia/" class="view-more" target="_blank" data-i18n="viewMore">View more</a>
+            </div>
+            <div class="card-body" id="translate-content">
+                <div class="empty-state" data-i18n="emptyState">The result will be displayed in here...</div>
+            </div>
+        </section>
+
+        <section class="dashboard-card card">
+            <div class="card-header">
+                <div>
+                    <span class="eyebrow" data-i18n="dictionaryEyebrow">Dictionary</span>
+                    <h2 data-i18n="dictionaryTitle">English definitions</h2>
+                </div>
+            </div>
+            <div class="card-body" id="english-content-1">
+                <div class="empty-state" data-i18n="emptyState">The result will be displayed in here...</div>
+            </div>
+        </section>
+
+        <section class="dashboard-card card">
+            <div class="card-header">
+                <div>
+                    <span class="eyebrow" data-i18n="lexiconEyebrow">Lexicon</span>
+                    <h2 data-i18n="synonymTitle">Synonyms in English</h2>
+                </div>
+            </div>
+            <div class="card-body" id="synonym">
+                <div class="empty-state" data-i18n="emptyState">The result will be displayed in here...</div>
+            </div>
+        </section>
+    </main>
 </div>
 <div class="arr-w3ls">
-    <a href="#" id="toTop" style="display: block;"><span id="toTopHover" style="opacity: 0;"></span></a>
+    <a href="#" id="toTop"><span id="toTopHover"></span></a>
 </div>
 <audio id="audio" style="display: none" controls="controls">
     <source id="audioSource" src="">
-    Your browser does not support the audio format.
+    <span data-i18n="audioUnsupported">Your browser does not support the audio format.</span>
 </audio>
 <script src="../assets/js/jquery-3.6.0.min.js"></script>
 <script src="../assets/js/jquery-ui.min.js"></script>
-<script src="../assets/js/main.js?v=22"></script>
+<script src="../assets/js/main.js?v=23"></script>
 </body></html>
