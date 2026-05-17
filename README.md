@@ -52,6 +52,22 @@ Kết quả nằm tại:
 dist/firefox
 ```
 
+Build và nén file upload store:
+
+```sh
+node scripts/build-extension.js chrome zip
+node scripts/build-extension.js firefox zip
+```
+
+File zip được tạo tại:
+
+```text
+dist/chrome.zip
+dist/firefox.zip
+```
+
+File zip được tạo bằng script build để tránh các file ẩn của macOS như `.DS_Store`, `._*` hoặc thư mục `__MACOSX`.
+
 ## Cài Đặt Unpacked Trên Chrome
 
 1. Build bản Chrome:
@@ -110,9 +126,13 @@ Lưu ý: Add-on tạm thời trên Firefox sẽ bị gỡ khi đóng trình duy�
 - `src/scripts`: background script và content script.
 - `src/assets`: CSS, JavaScript, icon và thư viện giao diện.
 - `scripts/build-extension.js`: script đóng gói extension vào `dist/chrome` hoặc `dist/firefox`.
+- Thêm tham số `zip` hoặc `--zip` để tạo file upload store sạch trong thư mục `dist`.
 
 ## Tác Giả
 
 - Author: [Hadesker](https://hadesker.dev)
 - Email: hello@hadesker.net
 
+## Giấy Phép
+
+Dự án được phát hành theo giấy phép MIT. Xem chi tiết trong file `LICENSE`.

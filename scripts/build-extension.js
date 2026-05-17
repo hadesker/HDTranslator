@@ -2,12 +2,16 @@
 
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 
-const target = process.argv[2] || 'chrome';
+const args = process.argv.slice(2);
 const targets = new Set(['chrome', 'firefox']);
+const target = args.find(arg => targets.has(arg)) || 'chrome';
+const shouldZip = args.includes('zip') || args.includes('--zip');
+const invalidArgs = args.filter(arg => !targets.has(arg) && arg !== 'zip' && arg !== '--zip');
 
-if(!targets.has(target)){
-    console.error('Usage: node scripts/build-extension.js <chrome|firefox>');
+if(invalidArgs.length){
+    console.error('Usage: node scripts/build-extension.js <chrome|firefox> [zip|--zip]');
     process.exit(1);
 }
 
@@ -34,7 +38,19 @@ const packageEntries = [
     'src/assets/vendor/font-awesome/fonts'
 ];
 
+function shouldIgnorePackageEntry(filePath) {
+    const parts = filePath.split(path.sep);
+    const basename = path.basename(filePath);
+    return parts.includes('__MACOSX') ||
+        basename === '.DS_Store' ||
+        basename.startsWith('._') ||
+        basename.startsWith('.');
+}
+
 function copyRecursive(source, destination) {
+    if(shouldIgnorePackageEntry(source)){
+        return;
+    }
     const stats = fs.statSync(source);
     if(stats.isDirectory()){
         fs.mkdirSync(destination, { recursive: true });
@@ -45,6 +61,30 @@ function copyRecursive(source, destination) {
     }
     fs.mkdirSync(path.dirname(destination), { recursive: true });
     fs.copyFileSync(source, destination);
+}
+
+function zipBuild() {
+    const zipPath = path.join(root, 'dist', `${target}.zip`);
+    fs.rmSync(zipPath, { force: true });
+    execFileSync('zip', [
+        '-r',
+        '-X',
+        zipPath,
+        '.',
+        '-x',
+        '*.DS_Store',
+        '*/.DS_Store',
+        '__MACOSX/*',
+        '*/__MACOSX/*',
+        '._*',
+        '*/._*',
+        '.*',
+        '*/.*'
+    ], {
+        cwd: outputDir,
+        stdio: 'inherit'
+    });
+    console.log(`Packaged ${target} extension in ${path.relative(root, zipPath)}`);
 }
 
 function assertExists(relativePath) {
@@ -183,3 +223,7 @@ for(const entry of packageEntries){
 fs.copyFileSync(manifestSource, path.join(outputDir, 'manifest.json'));
 validateBuild(JSON.parse(fs.readFileSync(manifestSource, 'utf8')));
 console.log(`Built ${target} extension in ${path.relative(root, outputDir)}`);
+
+if(shouldZip){
+    zipBuild();
+}

@@ -64,7 +64,12 @@
     ],
     "browser_specific_settings": {
         "gecko": {
-            "id": "hd-translator@dictionary.faster.asia"
+            "id": "hd-translator@dictionary.faster.asia",
+            "data_collection_permissions": {
+                "required": [
+                    "websiteContent"
+                ]
+            }
         }
     }
 }
