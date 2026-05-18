@@ -13,6 +13,8 @@ HD Translator là extension hỗ trợ tra từ và dịch Anh - Việt / Việt
 
 ![HD Translator Vietnamese to English lookup](store-listing/vi2en.png)
 
+![HD Translator English to Vietnamese lookup](store-listing/en2vi.png)
+
 ## Mục Đích
 
 Extension được tạo để giúp người dùng đọc tài liệu, học tiếng Anh và tra cứu nhanh mà không phải chuyển qua lại nhiều tab. Người dùng có thể mở từ điển trong Side Panel, bôi chọn văn bản trên trang web để dịch nhanh, nghe phát âm và sao chép kết quả khi cần.
