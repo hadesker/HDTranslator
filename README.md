@@ -1,13 +1,15 @@
 # HD Translator
 
-HD Translator là extension hỗ trợ tra từ và dịch Anh - Việt / Việt - Anh ngay trong trình duyệt.
+[English](README.md) | [🇻🇳 Tiếng Việt](README.vi.md)
 
-## Cài Đặt Từ Store
+HD Translator is a browser extension for English-Vietnamese and Vietnamese-English dictionary lookup and translation.
+
+## Install From Store
 
 - [Chrome Web Store](https://chromewebstore.google.com/detail/hd-translator/likbjifbakomfhmnmhejipopjadcmpbe)
 - [Firefox Add-ons](https://addons.mozilla.org/vi/firefox/addon/hd-translator)
 
-## Ảnh Chụp Màn Hình
+## Screenshots
 
 ![HD Translator promotional screenshot](store-listing/ads_square.png)
 
@@ -15,137 +17,137 @@ HD Translator là extension hỗ trợ tra từ và dịch Anh - Việt / Việt
 
 ![HD Translator English to Vietnamese lookup](store-listing/en2vi.png)
 
-## Mục Đích
+## Purpose
 
-Extension được tạo để giúp người dùng đọc tài liệu, học tiếng Anh và tra cứu nhanh mà không phải chuyển qua lại nhiều tab. Người dùng có thể mở từ điển trong Side Panel, bôi chọn văn bản trên trang web để dịch nhanh, nghe phát âm và sao chép kết quả khi cần.
+HD Translator helps users read documents, learn English, and look up words quickly without switching between tabs. Users can open the dictionary in the browser side panel, select text on a webpage for quick translation, listen to pronunciation, and copy results when needed.
 
-## Chức Năng Chính
+## Main Features
 
-- Tra từ Anh - Việt và Việt - Anh.
-- Dịch nhanh văn bản được bôi chọn trên trang web.
-- Hiển thị popup dịch nhỏ cạnh vùng chọn khi bật chế độ tự động dịch.
-- Mở giao diện tra cứu đầy đủ trong Chrome Side Panel hoặc Firefox Sidebar.
-- Xem nghĩa, định nghĩa tiếng Anh, ví dụ, từ đồng nghĩa, IPA và phát âm.
-- Nghe phát âm bằng audio có sẵn hoặc giọng đọc của trình duyệt.
-- Sao chép từ, ví dụ và bản dịch.
-- Chuyển ngôn ngữ giao diện giữa tiếng Anh và tiếng Việt.
-- Hỗ trợ dịch câu trong ô tìm kiếm bằng tiền tố `.ve.` / `.ev.`.
+- Look up English-Vietnamese and Vietnamese-English words.
+- Quickly translate selected text on webpages.
+- Show a small inline translation popup next to selected text when auto translate is enabled.
+- Open a full lookup interface in Chrome Side Panel or Firefox Sidebar.
+- View meanings, English definitions, examples, synonyms, IPA, and pronunciation.
+- Listen to pronunciation using available audio or browser speech.
+- Copy words, examples, and translations.
+- Switch the interface language between English and Vietnamese.
+- Translate sentences in the search box using `.ve.` / `.ev.` prefixes.
 
-## Yêu Cầu
+## Requirements
 
 - Node.js.
-- Chrome hoặc trình duyệt Chromium hỗ trợ Manifest V3.
-- Firefox, nếu muốn build bản Firefox.
+- Chrome or a Chromium-based browser that supports Manifest V3.
+- Firefox, if you want to build the Firefox version.
 
-Repo này không cần cài thêm package npm để build extension.
+This repository does not require any extra npm packages to build the extension.
 
 ## Build
 
-Build bản Chrome:
+Build the Chrome version:
 
 ```sh
 node scripts/build-extension.js chrome
 ```
 
-Kết quả nằm tại:
+The output is created at:
 
 ```text
 dist/chrome
 ```
 
-Build bản Firefox:
+Build the Firefox version:
 
 ```sh
 node scripts/build-extension.js firefox
 ```
 
-Kết quả nằm tại:
+The output is created at:
 
 ```text
 dist/firefox
 ```
 
-Build và nén file upload store:
+Build and create store upload zip files:
 
 ```sh
 node scripts/build-extension.js chrome zip
 node scripts/build-extension.js firefox zip
 ```
 
-File zip được tạo tại:
+The zip files are created at:
 
 ```text
 dist/chrome.zip
 dist/firefox.zip
 ```
 
-File zip được tạo bằng script build để tránh các file ẩn của macOS như `.DS_Store`, `._*` hoặc thư mục `__MACOSX`.
+The zip files are created by the build script to avoid macOS hidden files such as `.DS_Store`, `._*`, or `__MACOSX`.
 
-## Cài Đặt Unpacked Trên Chrome
+## Install Unpacked On Chrome
 
-1. Build bản Chrome:
+1. Build the Chrome version:
 
 ```sh
 node scripts/build-extension.js chrome
 ```
 
-2. Mở Chrome và truy cập:
+2. Open Chrome and go to:
 
 ```text
 chrome://extensions
 ```
 
-3. Bật **Developer mode**.
-4. Chọn **Load unpacked**.
-5. Chọn thư mục:
+3. Enable **Developer mode**.
+4. Click **Load unpacked**.
+5. Select this folder:
 
 ```text
 dist/chrome
 ```
 
-6. Sau khi cài, nhấn biểu tượng HD Translator trên toolbar để mở extension trong Side Panel.
+6. After installation, click the HD Translator icon on the toolbar to open the extension in the Side Panel.
 
-## Cài Đặt Tạm Thời Trên Firefox
+## Temporary Installation On Firefox
 
-1. Build bản Firefox:
+1. Build the Firefox version:
 
 ```sh
 node scripts/build-extension.js firefox
 ```
 
-2. Mở Firefox và truy cập:
+2. Open Firefox and go to:
 
 ```text
 about:debugging#/runtime/this-firefox
 ```
 
-3. Chọn **Load Temporary Add-on...**.
-4. Chọn file:
+3. Click **Load Temporary Add-on...**.
+4. Select this file:
 
 ```text
 dist/firefox/manifest.json
 ```
 
-5. Sau khi cài, mở HD Translator từ toolbar hoặc sidebar của Firefox.
+5. After installation, open HD Translator from the Firefox toolbar or sidebar.
 
-Lưu ý: Add-on tạm thời trên Firefox sẽ bị gỡ khi đóng trình duyệt. Cần load lại nếu muốn tiếp tục kiểm thử.
+Note: Temporary Firefox add-ons are removed when the browser closes. Load the add-on again if you want to continue testing.
 
-## Cấu Trúc Build
+## Build Structure
 
-- `manifest.json`: manifest chính cho Chrome MV3.
-- `manifest.chrome.json`: manifest dùng khi build bản Chrome.
-- `manifest.firefox.json`: manifest dùng khi build bản Firefox.
-- `src/pages`: giao diện popup/sidebar.
-- `src/scripts`: background script và content script.
-- `src/assets`: CSS, JavaScript, icon và thư viện giao diện.
-- `scripts/build-extension.js`: script đóng gói extension vào `dist/chrome` hoặc `dist/firefox`.
-- Thêm tham số `zip` hoặc `--zip` để tạo file upload store sạch trong thư mục `dist`.
+- `manifest.json`: main Chrome MV3 manifest.
+- `manifest.chrome.json`: manifest used for the Chrome build.
+- `manifest.firefox.json`: manifest used for the Firefox build.
+- `src/pages`: popup/sidebar interface.
+- `src/scripts`: background script and content script.
+- `src/assets`: CSS, JavaScript, icons, and UI libraries.
+- `scripts/build-extension.js`: packages the extension into `dist/chrome` or `dist/firefox`.
+- Add the `zip` or `--zip` argument to create a clean store upload zip file in `dist`.
 
-## Tác Giả
+## Author
 
 - Author: [Hadesker](https://hadesker.dev)
 - Email: hello@hadesker.net
 
-## Giấy Phép
+## License
 
-Dự án được phát hành theo giấy phép MIT. Xem chi tiết trong file `LICENSE`.
+This project is released under the MIT License. See [LICENSE](LICENSE) for details.
