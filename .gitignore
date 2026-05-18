@@ -2,5 +2,5 @@
 /dist
 *.zip
 .idea
-store-listing
+store-listing/store-description.md
 .DS_Store

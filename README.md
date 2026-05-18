@@ -2,6 +2,17 @@
 
 HD Translator là extension hỗ trợ tra từ và dịch Anh - Việt / Việt - Anh ngay trong trình duyệt.
 
+## Cài Đặt Từ Store
+
+- [Chrome Web Store](https://chromewebstore.google.com/detail/hd-translator/likbjifbakomfhmnmhejipopjadcmpbe)
+- [Firefox Add-ons](https://addons.mozilla.org/vi/firefox/addon/hd-translator)
+
+## Ảnh Chụp Màn Hình
+
+![HD Translator promotional screenshot](store-listing/ads_square.png)
+
+![HD Translator Vietnamese to English lookup](store-listing/vi2en.png)
+
 ## Mục Đích
 
 Extension được tạo để giúp người dùng đọc tài liệu, học tiếng Anh và tra cứu nhanh mà không phải chuyển qua lại nhiều tab. Người dùng có thể mở từ điển trong Side Panel, bôi chọn văn bản trên trang web để dịch nhanh, nghe phát âm và sao chép kết quả khi cần.
