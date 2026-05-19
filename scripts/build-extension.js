@@ -18,6 +18,7 @@ if(invalidArgs.length){
 const root = path.resolve(__dirname, '..');
 const outputDir = path.join(root, 'dist', target);
 const manifestSource = path.join(root, `manifest.${target}.json`);
+const manifest = JSON.parse(fs.readFileSync(manifestSource, 'utf8'));
 
 const packageEntries = [
     'src/pages',
@@ -63,9 +64,30 @@ function copyRecursive(source, destination) {
     fs.copyFileSync(source, destination);
 }
 
+function sanitizeVersion(version) {
+    return String(version || '0.0.0')
+        .trim()
+        .replace(/[^0-9A-Za-z._-]+/g, '-');
+}
+
+function removePreviousZipFiles() {
+    const distDir = path.join(root, 'dist');
+    if(!fs.existsSync(distDir)){
+        return;
+    }
+    for(const entry of fs.readdirSync(distDir)){
+        const isLegacyZip = entry === `${target}.zip`;
+        const isVersionedZip = entry.startsWith(`${target}-v`) && entry.endsWith('.zip');
+        if(isLegacyZip || isVersionedZip){
+            fs.rmSync(path.join(distDir, entry), { force: true });
+        }
+    }
+}
+
 function zipBuild() {
-    const zipPath = path.join(root, 'dist', `${target}.zip`);
-    fs.rmSync(zipPath, { force: true });
+    const version = sanitizeVersion(manifest.version);
+    const zipPath = path.join(root, 'dist', `${target}-v${version}.zip`);
+    removePreviousZipFiles();
     execFileSync('zip', [
         '-r',
         '-X',
@@ -221,7 +243,7 @@ for(const entry of packageEntries){
 }
 
 fs.copyFileSync(manifestSource, path.join(outputDir, 'manifest.json'));
-validateBuild(JSON.parse(fs.readFileSync(manifestSource, 'utf8')));
+validateBuild(manifest);
 console.log(`Built ${target} extension in ${path.relative(root, outputDir)}`);
 
 if(shouldZip){

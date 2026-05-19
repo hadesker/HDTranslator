@@ -77,11 +77,11 @@ node scripts/build-extension.js firefox zip
 File zip được tạo tại:
 
 ```text
-dist/chrome.zip
-dist/firefox.zip
+dist/chrome-v1.3.zip
+dist/firefox-v1.3.zip
 ```
 
-File zip được tạo bằng script build để tránh các file ẩn của macOS như `.DS_Store`, `._*` hoặc thư mục `__MACOSX`.
+Tên file zip dùng version hiện tại trong manifest. File zip được tạo bằng script build để tránh các file ẩn của macOS như `.DS_Store`, `._*` hoặc thư mục `__MACOSX`.
 
 ## Cài Đặt Unpacked Trên Chrome
 

@@ -77,11 +77,11 @@ node scripts/build-extension.js firefox zip
 The zip files are created at:
 
 ```text
-dist/chrome.zip
-dist/firefox.zip
+dist/chrome-v1.3.zip
+dist/firefox-v1.3.zip
 ```
 
-The zip files are created by the build script to avoid macOS hidden files such as `.DS_Store`, `._*`, or `__MACOSX`.
+The zip file names use the current manifest version. The zip files are created by the build script to avoid macOS hidden files such as `.DS_Store`, `._*`, or `__MACOSX`.
 
 ## Install Unpacked On Chrome
 
